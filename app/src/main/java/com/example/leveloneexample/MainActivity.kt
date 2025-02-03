@@ -63,8 +63,10 @@ fun GuessAnimalScreen() {
 @Composable
 fun ScreenContent(modifier: Modifier) {
     //TODO: we add more code here later
-    Text(modifier = modifier.padding(16.dp),
-        text = "It works! - remove this text later")
+    Text(
+        "It works! - remove this text later",
+        modifier = modifier.padding()
+    )
 }
 
 @Preview(showBackground = true)
