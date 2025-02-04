@@ -1,6 +1,8 @@
 package com.example.leveloneexample
 
+import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -36,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 
 import com.example.leveloneexample.ui.theme.LevelOneExampleTheme
 
@@ -81,6 +84,9 @@ fun GuessAnimalScreen() {
 @Composable
 fun ScreenContent(modifier: Modifier) {
 
+    // Context is needed for displaying a Toast message.
+    val context = LocalContext.current
+
     // Local variable to hold and save the value of the text entered by the user.
     var answerText by remember { mutableStateOf(String()) }
 
@@ -116,13 +122,25 @@ fun ScreenContent(modifier: Modifier) {
             Spacer(modifier = modifier.width(8.dp))
             Button(
                 onClick = {
-                    // TODO to be completed
+                    verifyAnswer(context, answerText)
                 }
             ) {
                 Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Process user input")
             }
         }
     }
+}
+
+fun verifyAnswer(context: Context, answerText: String) {
+    var toastText = "\"" + answerText + "\""
+    // Don't mind uppercase or lowercase entered, transfer all to uppercase.
+    toastText += if (answerText.uppercase() == context.getString(R.string.giraffe_upper)) {
+        context.getString(R.string.correct)
+    } else {
+        context.getString(R.string.incorrect)
+    }
+    Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
+
 }
 
 @Preview(showBackground = true)
