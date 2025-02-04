@@ -5,10 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.Button
@@ -29,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.height
+import androidx.compose.ui.Alignment
 
 import com.example.leveloneexample.ui.theme.LevelOneExampleTheme
 
@@ -73,41 +77,45 @@ fun GuessAnimalScreen() {
 
 @Composable
 fun ScreenContent(modifier: Modifier) {
-   Column(
-       modifier
-           .padding(16.dp)
-   ) { 
-       Text(
-           text = stringResource(R.string.animal_question),
-           style = MaterialTheme.typography.headlineSmall,
-       )
-       Image(
-           painter = painterResource(id = R.drawable.giraffe),
-           contentDescription = "giraffe",
-           modifier = Modifier
-               .width(250.dp)
-               .height(250.dp)
-       )
-       Row()
-       {
-           OutlinedTextField(
-               value = String(),
-               // Below line is used to add placeholder ("hint") for our text field.
-               placeholder = { Text(text = stringResource (id = R.string.animal_question)) },
-               onValueChange = {
-                   // TODO to be completed
-               },
-               label = { Text(stringResource(R.string.answer_label))}
-           )
-           Button(
-               onClick = {
-                   // TODO To be completed
-               }
-           ) {
-               Icon(Icons.AutoMirrored.Filled.Send, "Process user input")
-           }
-       }
-   }
+    Column(
+        modifier
+            .fillMaxHeight()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(R.string.animal_question),
+            style = MaterialTheme.typography.headlineSmall,
+        )
+        Image(
+            painter = painterResource(id = R.drawable.giraffe),
+            contentDescription = "giraffe",
+            modifier = Modifier
+                .width(250.dp)
+                .height(250.dp)
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                value = String(),
+                placeholder = { Text(text = stringResource(id = R.string.animal_question)) },
+                onValueChange = {
+                    // TODO to be completed
+                },
+                label = { Text(stringResource(R.string.answer_label)) }
+            )
+            Spacer(modifier = modifier.width(8.dp))
+            Button(
+                onClick = {
+                    // TODO to be completed
+                }
+            ) {
+                Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Process user input")
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)
