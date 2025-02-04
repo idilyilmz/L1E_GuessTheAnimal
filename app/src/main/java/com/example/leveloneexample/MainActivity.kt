@@ -103,30 +103,40 @@ fun ScreenContent(modifier: Modifier) {
         )
         Image(
             painter = painterResource(id = R.drawable.giraffe),
+            // decorative element
             contentDescription = "giraffe",
             modifier = Modifier
                 .width(250.dp)
                 .height(250.dp)
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedTextField(
-                value = answerText,
-                placeholder = { Text(text = stringResource(id = R.string.animal_question)) },
-                onValueChange = {
-                    answerText = it
-                },
-                label = { Text(stringResource(R.string.answer_label)) }
-            )
-            Spacer(modifier = modifier.width(8.dp))
-            Button(
-                onClick = {
-                    verifyAnswer(context, answerText)
-                }
-            ) {
-                Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Process user input")
-            }
+       InputSegment(modifier)
+    }
+}
+
+@Composable
+fun InputSegment(modifier: Modifier){
+    // Context is needed for displaying a Toast message.
+    val context = LocalContext.current
+
+    // Local variable to hold and save the value of the text entered by the user.
+    var answerText by remember { mutableStateOf(String()) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    )
+    {
+        OutlinedTextField(
+            value = answerText,
+            // Below line is used to add placeholder ("hint") for our text field.
+            placeholder = { Text(text = stringResource(id = R.string.animal_question)) },
+            onValueChange = {
+                answerText = it
+            },
+            label = { Text(stringResource(R.string.answer_label)) }
+        )
+        Spacer(modifier = modifier.width(8.dp))
+        Button(
+            onClick = { verifyAnswer(context, answerText) }) {
+            Icon(Icons.AutoMirrored.Filled.Send, "Process user input")
         }
     }
 }
