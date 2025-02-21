@@ -13,8 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -97,67 +95,131 @@ fun ScreenContent(modifier: Modifier) {
     // Holds the user's answer input, ensuring it persists across recompositions.
     var answerText by remember { mutableStateOf("") }
 
-    // Get the current orientation
+    // Get the current configuration to determine the device's orientation.
     val configuration = LocalConfiguration.current
+    // Check if the device is in landscape orientation.
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
+    // check the current configuration to determine the device's orientation\
     if (isLandscape) {
         // Landscape layout
+        // use a row to arrange elements horizontally in landscape mode
         Row(
+            // Make the Row fill the entire available space.
             modifier = modifier.fillMaxSize(),
+
+            // Distribute space evenly between the columns.
             horizontalArrangement = Arrangement.SpaceEvenly,
+
+            // Center the columns vertically within the Row.
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // First Column: Contains the question and the image.
             Column(
+                // Center the content horizontally.
                 horizontalAlignment = Alignment.CenterHorizontally,
+
+                // Center the content vertically.
                 verticalArrangement = Arrangement.Center,
+
+                // Make the column take up half of the available space.
                 modifier = Modifier.weight(1f)
             ) {
+                // Display the question text.
                 Text(
+                    // Get the text from resources.
                     text = stringResource(R.string.animal_question),
+
+                    // Apply headlineSmall text style.
                     style = MaterialTheme.typography.headlineSmall
                 )
+
+                // Add a vertical space between the text and the image.
                 Spacer(modifier = Modifier.height(16.dp))
+
+                // Display the giraffe image.
                 Image(
+                    // Load the image from resources.
                     painter = painterResource(id = R.drawable.giraffe),
+
+                    // Provide a description for accessibility.
                     contentDescription = "giraffe",
+
                     modifier = Modifier
+
+                        // Set the width of the image.
                         .width(200.dp)
+
+                        // Set the height of the image.
                         .height(200.dp)
                 )
             }
+
+            // Second Column: Contains the input segment.
             Column(
+                // Center the content horizontally.
                 horizontalAlignment = Alignment.CenterHorizontally,
+
+                // Center the content vertically.
                 verticalArrangement = Arrangement.Center,
+
+                // Make the column take up half of the available space.
                 modifier = Modifier.weight(1f)
             ) {
-                InputSegment(answerText) { answerText = it }
+                // Display the input segment for the user to enter their answer.
+                InputSegment(answerText) { answerText = it } // Update the answerText state.
             }
         }
     } else {
         // Portrait layout
+        // Use a Column to arrange elements vertically in portrait mode.
         Column(
             modifier = modifier
+
+                // Make the Column fill the entire available height.
                 .fillMaxHeight()
+
+                // Add padding around the Column.
                 .padding(16.dp),
+
+            // Center the content horizontally.
             horizontalAlignment = Alignment.CenterHorizontally,
-            //verticalArrangement = Arrangement.SpaceBetween
         ) {
+
+            // Add a vertical space at the top.
             Spacer(modifier = Modifier.height(24.dp))
+
+            // Display the question text.
             Text(
+                // Get the text from resources.
                 text = stringResource(R.string.animal_question),
+
+                // Apply headlineSmall text style.
                 style = MaterialTheme.typography.headlineSmall
             )
+
+            // Add a vertical space between the text and the image.
             Spacer(modifier = Modifier.height(16.dp))
+
+            // Display the giraffe image.
             Image(
+                // Load the image from resources.
                 painter = painterResource(id = R.drawable.giraffe),
+
+                // Provide a description for accessibility.
                 contentDescription = "giraffe",
                 modifier = Modifier
+                    // Set the width of the image.
                     .width(250.dp)
+
+                    // Set the height of the image.
                     .height(250.dp)
             )
+
+            // Add a flexible space that will push the input segment to the bottom.
             Spacer(modifier = Modifier.weight(1f))
-            InputSegment(answerText) { answerText = it }
+            // Display the input segment for the user to enter their answer.
+            InputSegment(answerText) { answerText = it } // Update the answerText state.
         }
     }
 }
@@ -179,11 +241,23 @@ fun InputSegment(answerText: String, onAnswerChange: (String) -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         // User input field with a placeholder and label.
         OutlinedTextField(
+            // The current text in the input field.
             value = answerText,
-            onValueChange = onAnswerChange, // Updates the parent-managed state.
+
+            // Updates the parent-managed state.
+            onValueChange = onAnswerChange,
+
+            // Label for the input field.
             label = { Text(stringResource(R.string.answer_label)) },
+
+            // Placeholder text.
             placeholder = { Text(stringResource(R.string.animal_question)) },
-            modifier = Modifier.widthIn(max = 250.dp) // Max width of 300dp
+            modifier = Modifier
+                // Make the text field take up most of the available space.
+                .weight(1f)
+
+                // Limit the maximum width of the text field.
+                .widthIn(max = 250.dp)
         )
 
         // Adds spacing between input and button.
@@ -195,7 +269,9 @@ fun InputSegment(answerText: String, onAnswerChange: (String) -> Unit) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.Send,
                 contentDescription = "Submit answer",
-                modifier = Modifier.size(24.dp) // Adjust size as needed
+
+                // Adjust size as needed
+                modifier = Modifier.size(24.dp)
             )
         }
     }
@@ -216,9 +292,11 @@ fun verifyAnswer(context: Context, answerText: String) {
             context.getString(R.string.giraffe_upper), ignoreCase = true
         )
     ) {
-        context.getString(R.string.correct) // Correct answer message.
+        // Correct answer message.
+        context.getString(R.string.correct)
     } else {
-        context.getString(R.string.incorrect) // Incorrect answer message.
+        // Incorrect answer message.
+        context.getString(R.string.incorrect)
     }
 
     // Display feedback to the user via a toast message.
