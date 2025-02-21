@@ -1,6 +1,7 @@
 package com.example.leveloneexample
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -16,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -95,34 +97,68 @@ fun ScreenContent(modifier: Modifier) {
     // Holds the user's answer input, ensuring it persists across recompositions.
     var answerText by remember { mutableStateOf("") }
 
-    Column(
-        modifier
-            .fillMaxHeight()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        // Adds spacing between input and button.
-        Spacer(modifier = Modifier.height(24.dp))
+    // Get the current orientation
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-        // Displays a question asking the user to guess the animal.
-        Text(
-            text = stringResource(R.string.animal_question),
-            style = MaterialTheme.typography.headlineSmall
-        )
-
-        // Displays an image of the animal the user needs to guess.
-        Image(
-            painter = painterResource(id = R.drawable.giraffe),
-            // decorative element
-            contentDescription = "giraffe",
-            modifier = Modifier
-                .width(250.dp)
-                .height(250.dp)
-        )
-
-        // Input field and button for user interaction.
-        InputSegment(answerText) { answerText = it }
+    if (isLandscape) {
+        // Landscape layout
+        Row(
+            modifier = modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = stringResource(R.string.animal_question),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.giraffe),
+                    contentDescription = "giraffe",
+                    modifier = Modifier
+                        .width(200.dp)
+                        .height(200.dp)
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.weight(1f)
+            ) {
+                InputSegment(answerText) { answerText = it }
+            }
+        }
+    } else {
+        // Portrait layout
+        Column(
+            modifier = modifier
+                .fillMaxHeight()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            //verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = stringResource(R.string.animal_question),
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Image(
+                painter = painterResource(id = R.drawable.giraffe),
+                contentDescription = "giraffe",
+                modifier = Modifier
+                    .width(250.dp)
+                    .height(250.dp)
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            InputSegment(answerText) { answerText = it }
+        }
     }
 }
 
